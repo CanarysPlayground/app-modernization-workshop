@@ -109,81 +109,58 @@ cd legacy-code/java-tournament-service
 code .
 ```
 
-2. **Use GitHub Copilot App Modernization Extension for Assessment:**
+2. **Use GitHub Copilot Chat for Assessment:**
 
-   **Method A: Right-Click Assessment (Recommended)**
-   - In VS Code Explorer, right-click on `pom.xml`
-   - Select **"Copilot: Analyze for Java Upgrade"**
-   - Wait 30-60 seconds for the automated analysis
-   - Review the **Assessment Report** that appears
-
-   **Method B: Chat Command**
-   - Open Copilot Chat (`Ctrl+Alt+I` or `Cmd+Alt+I`)
-   - Run: `@workspace /agent AppModernization-Java analyze this Spring Boot project`
-
-3. **Review the Automated Assessment Report:**
-
-   The extension will provide:
+   Open Copilot Chat (`Ctrl+Alt+I` or `Cmd+Alt+I`) and ask:
    ```
-   📊 ASSESSMENT REPORT
-   ==================
-   Current Version: Spring Boot 2.7.18 on Java 11
-   Target Version: Spring Boot 3.2.x on Java 17+
-   
-   ⚠️ Issues Found: 15
-   
-   CRITICAL:
-   - Spring Boot version outdated (EOL)
-   - Java 11 not supported for Spring Boot 3.x
-   - javax.* packages must migrate to jakarta.*
-   
-   WARNINGS:
-   - Blocking I/O patterns detected
-   - Deprecated Spring Security configurations
-   - H2 database needs reactive driver
-   
-   📈 Migration Complexity: MEDIUM
-   ⏱️ Estimated Time: 2-3 hours
-   
-   ✅ Recommended Path:
-   1. Update Java 11 → 17
-   2. Update Spring Boot 2.7 → 3.2
-   3. Migrate javax → jakarta
-   4. Convert to reactive endpoints (optional)
+   @workspace Analyze this Spring Boot project for modernization. What version is it using and what needs to be upgraded to Spring Boot 3.x?
    ```
 
-4. **The extension will highlight issues in your code:**
-   - Yellow underlines on deprecated code
-   - Red underlines on breaking changes
-   - Blue suggestions for improvements
+   Or use the agent:
+   ```
+   @workspace /agent AppModernization-Java analyze this project
+   ```
 
-### Step 2: Use Extension's Automated Upgrade (5 minutes)
+3. **Review Copilot's Assessment:**
 
-**The extension can automatically update your pom.xml!**
-
-1. **Open `pom.xml`** - You should see:
-   - 💡 Copilot lightbulb icons on outdated dependencies
-   - Underlined version numbers
+   Copilot will analyze your project and provide:
    
-2. **Start the Automated Upgrade:**
+   - Current Spring Boot version (2.7.18)
+   - Target version recommendations (3.2.x)
+   - List of deprecated dependencies
+   - Required Java version (17+)
+   - Breaking changes to address:
+     - `javax.*` → `jakarta.*` package migration
+     - Blocking I/O → Reactive patterns
+     - Deprecated configurations
+   - Step-by-step migration recommendations
 
-   **Option A: Use Quick Fix (Easiest)**
-   - Click on the Spring Boot version line
-   - Look for the 💡 lightbulb icon
-   - Click "Update to Spring Boot 3.2" from the menu
-   - The extension will automatically update compatible dependencies!
+4. **Ask follow-up questions in chat:**
+   ```
+   What are the breaking changes between Spring Boot 2.7 and 3.2?
+   ```
+   ```
+   Show me how to update the pom.xml for Spring Boot 3.2
+   ```
 
-   **Option B: Use Extension Command**
-   - Right-click on `pom.xml`
-   - Select **"Copilot: Upgrade Java Project"**
-   - Choose "Spring Boot 3.2" from the dropdown
-   - Confirm the changes
+### Step 2: Update pom.xml with Copilot (5 minutes)
 
-3. **Review the Automated Changes:**
+**Use Copilot Chat to upgrade dependencies:**
 
-   The extension will show you a diff view with all proposed changes:
+1. **Open `pom.xml` in VS Code**
 
-3. **Expected Changes:**
+2. **Ask Copilot to update it:**
+
+   In Copilot Chat:
+   ```
+   @workspace Update this pom.xml to Spring Boot 3.2.0 with Java 17. Add spring-boot-starter-webflux and spring-boot-starter-data-r2dbc for reactive programming. Also add actuator and prometheus metrics.
+   ```
+
+3. **Review Copilot's suggested changes:**
+
+   Copilot will suggest updating:
+
+3. **Apply the changes to get:**
 
 ```xml
 <parent>
@@ -228,26 +205,24 @@ code .
 mvn clean install
 ```
 
-### Step 3: Use Extension for Automated Javax→Jakarta Migration (5 minutes)
+### Step 3: Migrate javax to jakarta with Copilot (5 minutes)
 
-**The extension handles this automatically!**
+**Use Copilot Edits for batch migration:**
 
-1. **Trigger the Migration:**
-   - Open any Java file with `javax` imports (e.g., `Tournament.java`)
-   - Look for yellow warnings on `import javax.*` lines
-   - Click the 💡 lightbulb icon
-   - Select **"Migrate to Jakarta EE"**
-   
-2. **Or use the batch migration:**
-   - Open Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`)
-   - Type: "Copilot: Migrate javax to jakarta"
-   - Press Enter
-   - The extension will scan all files and show a preview
-   - Click **"Apply All Changes"**
+1. **Open Copilot Edits** (`Ctrl+Shift+I` or `Cmd+Shift+I`)
 
-3. **Extension shows you the migration summary:**
+2. **Add all Java files to the editing session:**
+   - Click "Add Files" in Copilot Edits
+   - Select all `.java` files in `src/main/java`
+
+3. **Give the migration instruction:**
    ```
-   ✅ Migrated Imports:
+   Replace all javax.persistence imports with jakarta.persistence, javax.validation with jakarta.validation, and any other javax.* imports with jakarta.* equivalents throughout all files.
+   ```
+
+4. **Review and accept the changes**
+
+5. **Expected migration summary:
    - Tournament.java: 4 imports updated
    - TournamentController.java: 2 imports updated
    - TournamentRepository.java: 1 import updated
@@ -262,42 +237,24 @@ mvn clean install
 mvn compile
 ```
 
-### Step 4: Use Extension to Convert Controllers to Reactive (10 minutes)
+### Step 4: Convert Controllers to Reactive with Copilot (10 minutes)
 
-**Let the extension guide your reactive conversion!**
+**Use Copilot Inline Chat for reactive conversion:**
 
 1. **Open `TournamentController.java`**
 
-2. **Use the Extension's Reactive Conversion:**
-   - Right-click anywhere in the controller class
-   - Select **"Copilot: Convert to Reactive WebFlux"**
-   - The extension analyzes your controller and generates reactive code
+2. **Select the entire controller class**
 
-3. **Review the Transformation Plan:**
-   
-   The extension shows you what will change:
+3. **Press `Ctrl+I` (Windows) or `Cmd+I` (Mac) for Inline Chat**
+
+4. **Give the instruction:**
    ```
-   📋 REACTIVE CONVERSION PLAN
-   
-   Will convert 7 endpoints:
-   ✓ GET /api/tournaments → Flux<Tournament>
-   ✓ GET /api/tournaments/{id} → Mono<Tournament>
-   ✓ POST /api/tournaments → Mono<Tournament>
-   ✓ PUT /api/tournaments/{id} → Mono<Tournament>
-   ✓ DELETE /api/tournaments/{id} → Mono<Void>
-   
-   Dependencies needed:
-   ✓ spring-boot-starter-webflux (already added)
-   ✓ spring-boot-starter-data-r2dbc (already added)
-   
-   Click "Preview Changes" to see the code transformation
+   Convert this controller to use Spring WebFlux with Mono and Flux. Make all methods reactive and non-blocking. Use constructor injection instead of @Autowired.
    ```
 
-4. **Click "Preview Changes" to see side-by-side comparison:**
+5. **Review Copilot's Changes:**
 
-#### Extension-Generated Code:
-
-**BEFORE (Blocking - shown by extension):**
+**BEFORE (Blocking):**
 ```java
 @RestController
 @RequestMapping("/api/tournaments")
@@ -317,9 +274,9 @@ public class TournamentController {
 }
 ```
 
-5. **Click "Apply Changes"** - the extension automatically transforms your code:
+6. **Accept Copilot's transformation:**
 
-**AFTER (Reactive - generated by extension):**
+**AFTER (Reactive):**
 ```java
 @RestController
 @RequestMapping("/api/tournaments")
@@ -351,65 +308,57 @@ public class TournamentController {
 }
 ```
 
-6. **Review the Extension's Summary:**
-   ```
-   ✅ CONVERSION COMPLETE
-   
-   Transformed:
-   - 7 endpoints converted to reactive
-   - Constructor injection applied
-   - Proper error handling added
-   - Flux/Mono types applied correctly
-   
-   Performance Impact:
-   + 3x throughput improvement
-   + Non-blocking I/O
-   + Better resource utilization
-   ```
-
-7. **Key Changes Made by Extension:**
+7. **Key Changes Copilot Made:**
    - `List<T>` → `Flux<T>` (streaming multiple items)
    - `T` → `Mono<T>` (single async result)
    - Added proper error handling with `.defaultIfEmpty()`
    - Constructor injection instead of `@Autowired`
 
-### Step 5: Use Extension for Repository Layer Modernization (5 minutes)
+8. **Repeat for Service and Repository layers** using the same Inline Chat approach
 
-**Let the extension handle R2DBC migration!**
+### Step 5: Modernize Repository Layer with Copilot (5 minutes)
+
+**Use Copilot to convert JPA to R2DBC:**
 
 1. **Open `TournamentRepository.java`**
 
-2. **Use the Extension's Data Layer Converter:**
-   - Right-click on the repository interface
-   - Select **"Copilot: Convert to Reactive Data Access"**
-   - Extension detects JPA and suggests R2DBC conversion
+2. **Select the repository interface**
 
-3. **Review the Conversion Preview:**
-
-   **BEFORE (Blocking JPA):**
-   ```java
-   @Repository
-   public interface TournamentRepository extends JpaRepository<Tournament, Long> {
-       List<Tournament> findByStatus(String status);
-       List<Tournament> findByGame(String game);
-   }
+3. **Press `Ctrl+I` for Inline Chat and ask:**
+   ```
+   Convert this JpaRepository to ReactiveCrudRepository using R2DBC. Update all return types to use Flux and Mono.
    ```
 
-4. **Click "Preview Reactive Version"** - extension shows:
+4. **Review the changes:**
 
-   **AFTER (Reactive R2DBC):**
-   ```java
-   @Repository
-   public interface TournamentRepository extends ReactiveCrudRepository<Tournament, Long> {
-       Flux<Tournament> findByStatus(String status);
-       Flux<Tournament> findByGame(String game);
-   }
+**BEFORE (Blocking JPA):**
+```java
+@Repository
+public interface TournamentRepository extends JpaRepository<Tournament, Long> {
+    List<Tournament> findByStatus(String status);
+    List<Tournament> findByGame(String game);
+}
+```
+
+5. **Accept Copilot's suggestion:**
+
+**AFTER (Reactive R2DBC):**
+```java
+@Repository
+public interface TournamentRepository extends ReactiveCrudRepository<Tournament, Long> {
+    Flux<Tournament> findByStatus(String status);
+    Flux<Tournament> findByGame(String game);
+}
+```
+
+6. **Update the entity with R2DBC annotations:**
+
+   Ask Copilot in chat:
+   ```
+   @workspace Update Tournament entity to use R2DBC annotations instead of JPA
    ```
 
-5. **Click "Apply Migration"** - extension updates:
-   - Repository interface extends `ReactiveCrudRepository`
-   - Return types changed to `Flux<T>` / `Mono<T>`
-   - Updates entity with R2DBC annotations:
+   Apply the changes:
    ```java
    @Table("tournaments")
    public class Tournament {
@@ -420,20 +369,6 @@ public class TournamentController {
        private String status;
        private LocalDateTime startDate;
    }
-   ```
-
-6. **Extension shows migration confirmation:**
-   ```
-   ✅ Repository Migration Complete
-   
-   Changes:
-   - JpaRepository → ReactiveCrudRepository
-   - JPA annotations → R2DBC annotations
-   - Blocking methods → Reactive Flux/Mono
-   
-   Dependencies updated:
-   ✓ Removed: spring-boot-starter-data-jpa
-   ✓ Added: spring-boot-starter-data-r2dbc
    ```
 
 ### Step 6: Add Health Checks and Metrics (3 minutes)
