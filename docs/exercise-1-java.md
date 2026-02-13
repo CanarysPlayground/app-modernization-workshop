@@ -190,28 +190,45 @@ code .
 </dependencies>
 ```
 
-### Step 3: Migrate javax to jakarta with Copilot (4 minutes)
+### Step 3: Verify Auto-Migration (2 minutes)
 
-**Use Copilot Edits for batch migration:**
+**⚡ Copilot Intelligence: In Step 2, when you asked to upgrade to Spring Boot 3.2, Copilot automatically handled the javax→jakarta migration because it understands Spring Boot 3 requires Jakarta EE!**
 
-1. **Open Copilot Edits** (`Ctrl+Shift+I` or `Cmd+Shift+I`)
+**Verify what Copilot already completed:**
 
-2. **Add all Java files to the editing session:**
-   - Click "Add Files" or select all `.java` files in `src/main/java`
+1. **Check the migration summary from Step 2**
 
-3. **Give the migration instruction:**
+   Look for Copilot's output showing:
+   - ✅ All `javax.*` → `jakarta.*` packages migrated
+   - ✅ WebFlux replaced `spring-boot-starter-web`
+   - ✅ R2DBC replaced `spring-boot-starter-data-jpa`
+   - ✅ Reactor types added to endpoints
+
+2. **Spot-check key files:**
+
+   Open `TournamentController.java` and verify:
+   ```java
+   // BEFORE: javax imports
+   import javax.persistence.Entity;
+   
+   // AFTER: jakarta imports (auto-migrated)
+   import jakarta.persistence.Entity;
    ```
-   Replace all javax.persistence imports with jakarta.persistence, javax.validation with jakarta.validation, and any other javax.* imports with jakarta.* equivalents
+
+3. **Verify reactive dependencies in pom.xml:**
+
+   Copilot should have added:
+   - `spring-boot-starter-webflux` (reactive web)
+   - `spring-boot-starter-data-r2dbc` (reactive data)
+   - `spring-boot-starter-actuator` (metrics)
+   - `micrometer-registry-prometheus` (observability)
+
+4. **Confirm the build works:**
+   ```bash
+   mvn clean compile
    ```
 
-4. **Review and accept the changes**
-
-5. **Verify the build:**
-
-   In Copilot Chat:
-   ```
-   @terminal Run mvn clean compile to verify the build succeeds
-   ```
+💡 **Pro Tip**: Modern LLMs understand migration dependencies. When you request a Spring Boot 3 upgrade, they automatically apply related changes like namespace migrations!
 
 ### Step 4: Convert Controllers to Reactive (8 minutes)
 
@@ -393,7 +410,7 @@ curl http://localhost:8080/actuator/health
 curl http://localhost:8080/actuator/metrics
 ```
 
-### Step 7: Test the Modernized Service (3 minutes)
+### Step 7: Test the Modernized Service (5 minutes)
 
 1. **Run the application:**
 ```bash
@@ -410,11 +427,42 @@ curl http://localhost:8080/api/tournaments
 curl http://localhost:8080/api/tournaments/1
 ```
 
-3. **Verify reactive behavior and metrics:**
+3. **Verify reactive streaming behavior:**
+
+   Test that endpoints return immediately (non-blocking):
+   ```bash
+   # Should stream results as they arrive
+   curl -N http://localhost:8080/api/tournaments
+   
+   # Test error handling (non-existent ID)
+   curl -v http://localhost:8080/api/tournaments/99999
+   # Should return 404 Not Found gracefully
+   ```
+
+4. **Validate health checks and metrics:**
 ```bash
-curl http://localhost:8080/actuator/health
+# Health check should show reactive components
+curl http://localhost:8080/actuator/health | jq
+
+# Check application metrics
 curl http://localhost:8080/actuator/metrics
+
+# Verify Prometheus metrics endpoint
+curl http://localhost:8080/actuator/prometheus | grep http_server_requests
 ```
+
+5. **Performance comparison (optional):**
+
+   Use Copilot Chat to understand the difference:
+   ```
+   @workspace Explain how the reactive WebFlux approach improves performance compared to the blocking servlet model. What metrics should I monitor?
+   ```
+
+6. **Verify no blocking code:**
+   ```bash
+   # Should return no results in reactive endpoints
+   grep -r ".block()" src/main/java/
+   ```
 
 ## ✅ Success Criteria
 
