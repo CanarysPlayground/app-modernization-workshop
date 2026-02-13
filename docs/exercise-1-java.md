@@ -109,58 +109,61 @@ cd legacy-code/java-tournament-service
 code .
 ```
 
-2. **Use GitHub Copilot Chat for Assessment:**
+2. **Select the Right Model for Assessment:**
 
-   Open Copilot Chat (`Ctrl+Alt+I` or `Cmd+Alt+I`) and ask:
-   ```
-   @workspace Analyze this Spring Boot project for modernization. What version is it using and what needs to be upgraded to Spring Boot 3.x?
-   ```
+   Click the Copilot icon → **Model Selector** → Choose:
+   - **GPT-4** for comprehensive analysis (recommended for assessment)
+   - **Claude 3.5 Sonnet** for alternative perspective
 
-   Or use the agent:
-   ```
-   @workspace /agent AppModernization-Java analyze this project
-   ```
+3. **Use Agent Mode for Assessment:**
 
-3. **Review Copilot's Assessment:**
-
-   Copilot will analyze your project and provide:
-   
-   - Current Spring Boot version (2.7.18)
-   - Target version recommendations (3.2.x)
-   - List of deprecated dependencies
-   - Required Java version (17+)
-   - Breaking changes to address:
-     - `javax.*` → `jakarta.*` package migration
-     - Blocking I/O → Reactive patterns
-     - Deprecated configurations
-   - Step-by-step migration recommendations
-
-4. **Ask follow-up questions in chat:**
+   Open Copilot Chat (`Ctrl+Alt+I` or `Cmd+Alt+I`) and use the specialized agent:
    ```
-   What are the breaking changes between Spring Boot 2.7 and 3.2?
-   ```
-   ```
-   Show me how to update the pom.xml for Spring Boot 3.2
+   @workspace /agent AppModernization-Java assess this Spring Boot application for upgrade to version 3.2
    ```
 
-### Step 2: Update pom.xml with Copilot (5 minutes)
+   The agent will use **predefined tasks** and **OpenRewrite** to analyze:
+   - Current framework versions
+   - CVE vulnerabilities in dependencies
+   - Breaking changes requiring remediation
+   - Azure cloud readiness
+   - Recommended migration path
 
-**Use Copilot Chat to upgrade dependencies:**
+4. **Review Agent's Assessment Report:**
+
+   The agent provides:
+   - ✅ Current: Spring Boot 2.7.18, Java 11
+   - 🎯 Target: Spring Boot 3.2.0, Java 17+
+   - ⚠️ CVEs found: 3 high-severity issues
+   - 📋 Required changes: javax→jakarta, reactive patterns
+   - 🔧 Predefined tasks available: Spring Boot 3 upgrade, reactive migration
+
+### Step 2: Apply Predefined Task for Spring Boot Upgrade (5 minutes)
+
+**Use the agent with predefined task for dependency upgrade:**
 
 1. **Open `pom.xml` in VS Code**
 
-2. **Ask Copilot to update it:**
+2. **Apply the Spring Boot 3 upgrade task using agent mode:**
 
    In Copilot Chat:
    ```
-   @workspace Update this pom.xml to Spring Boot 3.2.0 with Java 17. Add spring-boot-starter-webflux and spring-boot-starter-data-r2dbc for reactive programming. Also add actuator and prometheus metrics.
+   @workspace /agent AppModernization-Java apply predefined task "upgrade-spring-boot-3" to pom.xml
    ```
 
-3. **Review Copilot's suggested changes:**
+   Or use inline chat on pom.xml (`Ctrl+I`):
+   ```
+   Upgrade to Spring Boot 3.2.0 with Java 17, add reactive web (webflux) and data (r2dbc) dependencies, actuator, and prometheus metrics
+   ```
 
-   Copilot will suggest updating:
+3. **The agent uses OpenRewrite recipes to transform:**
 
-3. **Apply the changes to get:**
+   - Automatically updates parent version
+   - Resolves compatible dependency versions
+   - Adds required reactive dependencies
+   - Removes deprecated dependencies
+
+4. **Applied changes:**
 
 ```xml
 <parent>
@@ -200,57 +203,58 @@ code .
 </dependencies>
 ```
 
-4. Run Maven update:
-```bash
-mvn clean install
-```
+### Step 3: Use Agent to Migrate javax to jakarta (5 minutes)
 
-### Step 3: Migrate javax to jakarta with Copilot (5 minutes)
+**Apply OpenRewrite recipe via agent:**
 
-**Use Copilot Edits for batch migration:**
+1. **Use agent mode for automated migration:**
 
-1. **Open Copilot Edits** (`Ctrl+Shift+I` or `Cmd+Shift+I`)
-
-2. **Add all Java files to the editing session:**
-   - Click "Add Files" in Copilot Edits
-   - Select all `.java` files in `src/main/java`
-
-3. **Give the migration instruction:**
+   In Copilot Chat:
    ```
-   Replace all javax.persistence imports with jakarta.persistence, javax.validation with jakarta.validation, and any other javax.* imports with jakarta.* equivalents throughout all files.
+   @workspace /agent AppModernization-Java apply predefined task "javax-to-jakarta" on all Java files
    ```
 
-4. **Review and accept the changes**
+   The agent uses **OpenRewrite recipes** (`org.openrewrite.java.migrate.jakarta.*`) to:
+   - Scan all Java files
+   - Replace javax imports with jakarta equivalents
+   - Update annotations and references
+   - Apply transformations atomically
 
-5. **Expected migration summary:
-   - Tournament.java: 4 imports updated
-   - TournamentController.java: 2 imports updated
-   - TournamentRepository.java: 1 import updated
-   
-   📦 Packages Affected:
-   - javax.persistence → jakarta.persistence (8 files)
-   - javax.validation → jakarta.validation (3 files)
+2. **Review the transformation summary from the agent**
+
+3. **Verify with Build Agent:**
+
+   ```
+   @workspace /agent AppModernization-Java verify build
    ```
 
-4. **Verify compilation:**
-```bash
-mvn compile
-```
+   The build agent:
+   - Runs `mvn clean compile`
+   - Reports any compilation errors
+   - Suggests fixes if issues found
+   - Shows successful build confirmation
 
-### Step 4: Convert Controllers to Reactive with Copilot (10 minutes)
+### Step 4: Convert Controllers to Reactive with Agent (10 minutes)
 
-**Use Copilot Inline Chat for reactive conversion:**
+**Use agent mode for reactive transformation:**
 
 1. **Open `TournamentController.java`**
 
-2. **Select the entire controller class**
+2. **Use the reactive migration agent:**
 
-3. **Press `Ctrl+I` (Windows) or `Cmd+I` (Mac) for Inline Chat**
+   In Copilot Chat:
+   ```
+   @workspace /agent AppModernization-Java convert TournamentController to reactive WebFlux with Mono/Flux patterns
+   ```
 
-4. **Give the instruction:**
+   Or use inline chat on the controller (`Ctrl+I`):
    ```
-   Convert this controller to use Spring WebFlux with Mono and Flux. Make all methods reactive and non-blocking. Use constructor injection instead of @Autowired.
+   Convert to reactive: use Flux for collections, Mono for single objects, constructor injection, proper error handling
    ```
+
+3. **Switch model for code generation:**
+   - Use **Claude 3.5 Sonnet** for reactive patterns (handles async well)
+   - Or **GPT-4o** for balanced approach
 
 5. **Review Copilot's Changes:**
 
@@ -308,26 +312,28 @@ public class TournamentController {
 }
 ```
 
-7. **Key Changes Copilot Made:**
+7. **Key Changes Agent Applied:**
    - `List<T>` → `Flux<T>` (streaming multiple items)
    - `T` → `Mono<T>` (single async result)
    - Added proper error handling with `.defaultIfEmpty()`
    - Constructor injection instead of `@Autowired`
 
-8. **Repeat for Service and Repository layers** using the same Inline Chat approach
+### Step 5: Modernize Repository with Agent (5 minutes)
 
-### Step 5: Modernize Repository Layer with Copilot (5 minutes)
+**Use agent for data layer transformation:**
 
-**Use Copilot to convert JPA to R2DBC:**
+1. **Convert repository to reactive:**
 
-1. **Open `TournamentRepository.java`**
-
-2. **Select the repository interface**
-
-3. **Press `Ctrl+I` for Inline Chat and ask:**
+   In Copilot Chat:
    ```
-   Convert this JpaRepository to ReactiveCrudRepository using R2DBC. Update all return types to use Flux and Mono.
+   @workspace /agent AppModernization-Java convert TournamentRepository from JpaRepository to ReactiveCrudRepository with R2DBC
    ```
+
+2. **The agent automatically:**
+   - Changes base interface to `ReactiveCrudRepository`
+   - Updates all method signatures to return `Flux`/`Mono`
+   - Modifies entity annotations for R2DBC
+   - Updates service layer to handle reactive types
 
 4. **Review the changes:**
 
@@ -351,14 +357,7 @@ public interface TournamentRepository extends ReactiveCrudRepository<Tournament,
 }
 ```
 
-6. **Update the entity with R2DBC annotations:**
-
-   Ask Copilot in chat:
-   ```
-   @workspace Update Tournament entity to use R2DBC annotations instead of JPA
-   ```
-
-   Apply the changes:
+3. **Entity updated automatically:**
    ```java
    @Table("tournaments")
    public class Tournament {
@@ -371,9 +370,51 @@ public interface TournamentRepository extends ReactiveCrudRepository<Tournament,
    }
    ```
 
-### Step 6: Add Health Checks and Metrics (3 minutes)
+### Step 6: Run CVE Check and Build Verification (3 minutes)
 
-1. Create `application.yml`:
+**Use agents for security and build validation:**
+
+1. **Check for CVE vulnerabilities:**
+
+   ```
+   @workspace /agent AppModernization-Java check CVEs in dependencies
+   ```
+
+   Agent reports:
+   - High-severity vulnerabilities found
+   - Recommended version upgrades
+   - Automatic remediation available
+
+2. **Apply CVE fixes:**
+
+   ```
+   @workspace /agent AppModernization-Java remediate CVEs
+   ```
+
+3. **Verify build integrity:**
+
+   ```
+   @workspace /agent AppModernization-Java verify build and run tests
+   ```
+
+   Build agent:
+   - Compiles the project
+   - Runs existing tests
+   - Reports test coverage
+   - Confirms successful modernization
+
+### Step 7: Add Health Checks and Metrics (3 minutes)
+
+**Use agent to configure observability:**
+
+1. **Generate application configuration with agent:**
+
+   In Copilot Chat:
+   ```
+   @workspace /agent AppModernization-Java add actuator configuration with prometheus metrics and health checks to application.yml
+   ```
+
+2. **Agent creates `application.yml`:**
 
 ```yaml
 spring:
@@ -401,18 +442,25 @@ server:
   port: 8080
 ```
 
-2. Test the endpoints:
+3. **Test endpoints:**
 ```bash
 mvn spring-boot:run
-
-# In another terminal
 curl http://localhost:8080/actuator/health
 curl http://localhost:8080/actuator/metrics
 ```
 
-### Step 7: Enable Virtual Threads (2 minutes)
+### Step 8: Enable Virtual Threads with Agent (2 minutes)
 
-Add virtual threads support for I/O operations:
+**Use agent for Java 21 virtual threads:**
+
+1. **Generate virtual thread configuration:**
+
+   In Copilot Chat:
+   ```
+   @workspace /agent AppModernization-Java add virtual threads configuration for better concurrency
+   ```
+
+2. **Agent creates configuration:
 
 ```java
 @Configuration
@@ -427,51 +475,65 @@ public class VirtualThreadConfig {
 }
 ```
 
-### Step 8: Test the Modernized Service (5 minutes)
+### Step 9: Generate Tests with Agent (3 minutes)
 
-1. **Run the application:**
-```bash
-mvn spring-boot:run
-```
+**Use test generation agent:**
 
-2. **Test reactive endpoints:**
-```bash
-# Create a tournament
-curl -X POST http://localhost:8080/api/tournaments \
-  -H "Content-Type: application/json" \
-  -d '{"name": "Spring Championship 2024", "game": "League of Legends", "status": "UPCOMING"}'
+1. **Generate comprehensive tests:**
 
-# Get all tournaments (reactive stream)
-curl http://localhost:8080/api/tournaments
+   In Copilot Chat:
+   ```
+   @workspace /agent AppModernization-Java generate unit tests for TournamentController with WebTestClient and 80% coverage
+   ```
 
-# Get single tournament
-curl http://localhost:8080/api/tournaments/1
-```
+2. **Agent generates:**
+   - Test class with proper annotations (`@WebFluxTest`)
+   - Mock beans configuration
+   - Test methods for all endpoints
+   - Reactive test patterns with `StepVerifier`
 
-3. **Check health and metrics:**
-```bash
-curl http://localhost:8080/actuator/health
-curl http://localhost:8080/actuator/metrics/jvm.threads.virtual
-```
+3. **Verify tests:**
+   ```bash
+   mvn test
+   ```
 
-4. **Generate unit tests with Copilot:**
+### Step 10: Containerize for Azure with Agent (4 minutes)
 
-Open Copilot Chat:
-```
-@workspace Generate comprehensive unit tests for TournamentController using WebTestClient and Mockito
-```
+**Use agent for Docker and Azure deployment:**
+
+1. **Generate Dockerfile:**
+
+   In Copilot Chat:
+   ```
+   @workspace /agent AppModernization-Java generate optimized Dockerfile for Azure Container Apps deployment
+   ```
+
+2. **Agent creates Dockerfile with:**
+   - Multi-stage build
+   - Java 17 base image
+   - Optimized layers
+   - Health check endpoint
+
+3. **Test containerization:**
+   ```bash
+   docker build -t tournament-service:latest .
+   docker run -p 8080:8080 tournament-service:latest
+   ```
 
 ## ✅ Success Criteria
 
 Your modernization is complete when:
 
+- [ ] Agent assessment shows Spring Boot 3.2.0 and Java 17+
+- [ ] All CVEs remediated (verified by CVE agent)
+- [ ] Build verification agent confirms successful compilation
 - [ ] Application starts successfully on port 8080
-- [ ] All endpoints return data in reactive manner (Mono/Flux)
-- [ ] Health check returns UP status
-- [ ] Metrics endpoint shows Prometheus format data
-- [ ] Unit tests pass with >80% coverage
+- [ ] All endpoints return data reactively (Mono/Flux)
+- [ ] Health check returns UP status with reactive components
+- [ ] Test coverage >80% (verified by test agent)
+- [ ] Dockerfile builds and container runs successfully
 - [ ] No blocking I/O in controllers or services
-- [ ] Virtual threads are enabled and visible in metrics
+- [ ] Virtual threads enabled and visible in metrics
 
 ## 🎯 Validation Commands
 
@@ -518,11 +580,16 @@ class TournamentControllerTest {
 
 ## 🎓 Key Takeaways
 
-1. **Spring Boot 3.x requires Java 17+** and Jakarta EE namespace
-2. **Reactive programming** (WebFlux) provides better scalability for I/O-bound operations
-3. **Virtual threads** simplify concurrent programming without reactive complexity
-4. **GitHub Copilot** can automate 70-80% of migration tasks
-5. **Actuator + Prometheus** provide production-ready observability
+1. **Agent Mode** is more powerful than ask mode - use `@workspace /agent` for structured workflows
+2. **Model Selection** matters - GPT-4 for analysis, Claude 3.5 Sonnet for reactive code patterns
+3. **Predefined Tasks** automate common scenarios - Spring Boot upgrade, javax→jakarta migration
+4. **OpenRewrite Integration** enables precise, automated code transformations at scale
+5. **Specialized Agents** handle specific tasks - build verification, CVE remediation, test generation
+6. **CVE Checking** should be part of every modernization - security is built-in
+7. **Reactive Programming** (WebFlux) provides better scalability for I/O-bound operations
+8. **Virtual Threads** (Java 21) simplify concurrent programming
+9. **Containerization** prepares apps for cloud deployment (Azure Container Apps, AKS)
+10. **Agent-Driven Workflows** accelerate modernization by 70-80% vs manual migration
 
 ## 📚 Additional Resources
 
