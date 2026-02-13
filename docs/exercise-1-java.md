@@ -46,40 +46,87 @@ Spring Boot 3.2.x
 
 ## 🚀 Step-by-Step Guide
 
-### Step 1: Analyze the Legacy Code (5 minutes)
+### Step 1: Use Extension to Analyze Legacy Code (5 minutes)
 
-1. Navigate to the legacy code:
+1. **Open the project in VS Code:**
 ```bash
 cd legacy-code/java-tournament-service
+code .
 ```
 
-2. Open `pom.xml` and observe:
-   - Spring Boot version: 2.7.18
-   - Java version: 11
-   - Deprecated dependencies
+2. **Use GitHub Copilot App Modernization Extension for Assessment:**
 
-3. Use GitHub Copilot to analyze the project:
+   **Method A: Right-Click Assessment (Recommended)**
+   - In VS Code Explorer, right-click on `pom.xml`
+   - Select **"Copilot: Analyze for Java Upgrade"**
+   - Wait 30-60 seconds for the automated analysis
+   - Review the **Assessment Report** that appears
 
-**Open Copilot Chat** (`Ctrl+Alt+I` or `Cmd+Alt+I`) and ask:
+   **Method B: Chat Command**
+   - Open Copilot Chat (`Ctrl+Alt+I` or `Cmd+Alt+I`)
+   - Run: `@workspace /agent AppModernization-Java analyze this Spring Boot project`
 
-```
-@workspace Analyze this Spring Boot project and list all deprecated dependencies and APIs that need updating for Spring Boot 3.2
-```
+3. **Review the Automated Assessment Report:**
 
-4. Review the output and note the key issues:
-   - [ ] Spring Boot version outdated
-   - [ ] Java 17+ required
-   - [ ] Javax → Jakarta namespace migration needed
-   - [ ] Blocking I/O in controllers
+   The extension will provide:
+   ```
+   📊 ASSESSMENT REPORT
+   ==================
+   Current Version: Spring Boot 2.7.18 on Java 11
+   Target Version: Spring Boot 3.2.x on Java 17+
+   
+   ⚠️ Issues Found: 15
+   
+   CRITICAL:
+   - Spring Boot version outdated (EOL)
+   - Java 11 not supported for Spring Boot 3.x
+   - javax.* packages must migrate to jakarta.*
+   
+   WARNINGS:
+   - Blocking I/O patterns detected
+   - Deprecated Spring Security configurations
+   - H2 database needs reactive driver
+   
+   📈 Migration Complexity: MEDIUM
+   ⏱️ Estimated Time: 2-3 hours
+   
+   ✅ Recommended Path:
+   1. Update Java 11 → 17
+   2. Update Spring Boot 2.7 → 3.2
+   3. Migrate javax → jakarta
+   4. Convert to reactive endpoints (optional)
+   ```
 
-### Step 2: Update Dependencies with Copilot (5 minutes)
+4. **The extension will highlight issues in your code:**
+   - Yellow underlines on deprecated code
+   - Red underlines on breaking changes
+   - Blue suggestions for improvements
 
-1. Open `pom.xml` in VS Code
+### Step 2: Use Extension's Automated Upgrade (5 minutes)
 
-2. Use Copilot Chat:
-```
-Update this pom.xml to Spring Boot 3.2.x, Java 17, and add Spring WebFlux dependencies. Also include spring-boot-starter-actuator and micrometer-registry-prometheus.
-```
+**The extension can automatically update your pom.xml!**
+
+1. **Open `pom.xml`** - You should see:
+   - 💡 Copilot lightbulb icons on outdated dependencies
+   - Underlined version numbers
+   
+2. **Start the Automated Upgrade:**
+
+   **Option A: Use Quick Fix (Easiest)**
+   - Click on the Spring Boot version line
+   - Look for the 💡 lightbulb icon
+   - Click "Update to Spring Boot 3.2" from the menu
+   - The extension will automatically update compatible dependencies!
+
+   **Option B: Use Extension Command**
+   - Right-click on `pom.xml`
+   - Select **"Copilot: Upgrade Java Project"**
+   - Choose "Spring Boot 3.2" from the dropdown
+   - Confirm the changes
+
+3. **Review the Automated Changes:**
+
+   The extension will show you a diff view with all proposed changes:
 
 3. **Expected Changes:**
 
@@ -126,34 +173,76 @@ Update this pom.xml to Spring Boot 3.2.x, Java 17, and add Spring WebFlux depend
 mvn clean install
 ```
 
-### Step 3: Migrate Javax to Jakarta (5 minutes)
+### Step 3: Use Extension for Automated Javax→Jakarta Migration (5 minutes)
 
-Spring Boot 3.x uses Jakarta EE instead of Java EE.
+**The extension handles this automatically!**
 
-1. **Use Copilot for bulk migration:**
+1. **Trigger the Migration:**
+   - Open any Java file with `javax` imports (e.g., `Tournament.java`)
+   - Look for yellow warnings on `import javax.*` lines
+   - Click the 💡 lightbulb icon
+   - Select **"Migrate to Jakarta EE"**
+   
+2. **Or use the batch migration:**
+   - Open Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`)
+   - Type: "Copilot: Migrate javax to jakarta"
+   - Press Enter
+   - The extension will scan all files and show a preview
+   - Click **"Apply All Changes"**
 
-Select all Java files (`Ctrl+Shift+F` → search for `javax.`)
+3. **Extension shows you the migration summary:**
+   ```
+   ✅ Migrated Imports:
+   - Tournament.java: 4 imports updated
+   - TournamentController.java: 2 imports updated
+   - TournamentRepository.java: 1 import updated
+   
+   📦 Packages Affected:
+   - javax.persistence → jakarta.persistence (8 files)
+   - javax.validation → jakarta.validation (3 files)
+   ```
 
-In Copilot Chat:
-```
-@workspace Replace all javax.* imports with jakarta.* equivalents across the entire project
-```
-
-2. **Key replacements:**
-   - `javax.persistence.*` → `jakarta.persistence.*`
-   - `javax.validation.*` → `jakarta.validation.*`
-   - `javax.servlet.*` → `jakarta.servlet.*`
-
-3. Verify:
+4. **Verify compilation:**
 ```bash
 mvn compile
 ```
 
-### Step 4: Convert Controllers to Reactive (10 minutes)
+### Step 4: Use Extension to Convert Controllers to Reactive (10 minutes)
 
-This is the core modernization step!
+**Let the extension guide your reactive conversion!**
 
-#### Example: TournamentController.java
+1. **Open `TournamentController.java`**
+
+2. **Use the Extension's Reactive Conversion:**
+   - Right-click anywhere in the controller class
+   - Select **"Copilot: Convert to Reactive WebFlux"**
+   - The extension analyzes your controller and generates reactive code
+
+3. **Review the Transformation Plan:**
+   
+   The extension shows you what will change:
+   ```
+   📋 REACTIVE CONVERSION PLAN
+   
+   Will convert 7 endpoints:
+   ✓ GET /api/tournaments → Flux<Tournament>
+   ✓ GET /api/tournaments/{id} → Mono<Tournament>
+   ✓ POST /api/tournaments → Mono<Tournament>
+   ✓ PUT /api/tournaments/{id} → Mono<Tournament>
+   ✓ DELETE /api/tournaments/{id} → Mono<Void>
+   
+   Dependencies needed:
+   ✓ spring-boot-starter-webflux (already added)
+   ✓ spring-boot-starter-data-r2dbc (already added)
+   
+   Click "Preview Changes" to see the code transformation
+   ```
+
+4. **Click "Preview Changes" to see side-by-side comparison:**
+
+#### Extension-Generated Code:
+
+**BEFORE (Blocking - shown by extension):**
 
 **Legacy (Blocking):**
 ```java

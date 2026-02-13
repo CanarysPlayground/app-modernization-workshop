@@ -47,87 +47,166 @@ Your mission: **Migrate to .NET 8 with minimal APIs, Entity Framework Core, and 
 
 ## 🚀 Step-by-Step Guide
 
-### Step 1: Assess the Legacy Code (5 minutes)
+### Step 1: Use Extension to Assess Legacy .NET Code (5 minutes)
 
-1. Navigate to the legacy code:
+1. **Open the project in VS Code:**
 ```bash
 cd legacy-code/dotnet-stats-api
+code .
 ```
 
-2. Examine the project structure:
-```
-PlayerStatsAPI/
-├── PlayerStatsAPI.csproj (Framework 4.8)
-├── Controllers/
-│   └── PlayersController.cs
-├── Models/
-│   ├── Player.cs
-│   └── MatchHistory.cs
-├── Data/
-│   └── StatsDbContext.cs
-└── Web.config
-```
+2. **Use GitHub Copilot App Modernization for .NET Extension:**
 
-3. **Use GitHub Copilot App Modernization Extension for .NET:**
+   **Method A: Right-Click Assessment (Recommended)**
+   - In VS Code Explorer, right-click on the **project folder** or `PlayerStatsAPI.csproj`
+   - Select **"Copilot: Assess for .NET Modernization"**
+   - Wait ~60 seconds for deep analysis
+   - The **Assessment Report** will appear in a new panel
 
-**Method 1: Right-click menu**
-- Right-click on the project folder or `.csproj` file
-- Select "Copilot: Assess for .NET Modernization"
-- Review the automated assessment
+   **Method B: Chat Command**
+   - Open Copilot Chat (`Ctrl+Alt+I` or `Cmd+Alt+I`)
+   - Run: `@workspace /agent AppModernization-DotNet assess this .NET Framework project`
 
-**Method 2: Chat command**
+3. **Review the Comprehensive Assessment Report:**
 
-Open Copilot Chat and run:
-```
-@workspace /agent AppModernization-DotNet assess this .NET project for migration to .NET 8
-```
+   The extension provides a detailed analysis:
+   ```
+   📊 .NET MODERNIZATION ASSESSMENT
+   ================================
+   
+   PROJECT DETAILS:
+   Current: .NET Framework 4.8 (Windows-only)
+   Target: .NET 8.0 (Cross-platform)
+   Project Type: ASP.NET Web API
+   
+   ⚠️ COMPATIBILITY ANALYSIS:
+   
+   BLOCKERS (0):
+   ✅ No blocking issues found
+   
+   API CHANGES REQUIRED (12):
+   - System.Web → Microsoft.AspNetCore (5 files)
+   - Entity Framework 6 → EF Core 8 (3 files)
+   - Web API Controllers → Minimal APIs (1 file)
+   - IHttpActionResult → IResult (7 methods)
+   
+   PACKAGE UPDATES (8):
+   - EntityFramework 6.4.4 → Microsoft.EntityFrameworkCore 8.0
+   - Microsoft.AspNet.WebApi 5.2.9 → [use built-in]
+   - Newtonsoft.Json 12.0.3 → System.Text.Json (recommended)
+   
+   📈 MIGRATION STRATEGY:
+   Complexity: MEDIUM
+   Estimated Effort: 3-4 hours
+   Recommended: Create new .NET 8 project and port code
+   Reason: .NET Framework cannot upgrade in-place to .NET Core/8
+   ```
 
-**Expected Assessment Report:**
-- Current .NET Framework version detected
-- Target framework recommendation (.NET 8)
-- List of incompatible packages
-- API compatibility issues
-- Estimated migration effort
+4. **Extension highlights issues in your code:**
+   - Files using incompatible APIs are marked
+   - Hover over errors to see migration suggestions
+   - Click lightbulbs for quick fixes
 
-4. Review the assessment output:
-   - [ ] .NET Framework 4.8 detected
-   - [ ] Entity Framework 6 needs migration to EF Core
-   - [ ] Web API controllers can be simplified to minimal APIs
-   - [ ] System.Web dependencies must be replaced
+### Step 2: Use Extension's Guided Migration Wizard (5 minutes)
 
-### Step 2: Create New .NET 8 Project (5 minutes)
+**The extension provides a step-by-step migration wizard!**
 
-1. **Create a new .NET 8 Web API project:**
+1. **Start the Migration Wizard:**
+   - After assessment, click **"Start Guided Migration"** in the assessment report
+   - OR: Right-click project → **"Copilot: Start .NET 8 Migration Wizard"**
 
-```bash
-cd ../..
-mkdir modernized-code/dotnet-stats-api
-cd modernized-code/dotnet-stats-api
+2. **Follow the Wizard Steps:**
 
-dotnet new webapi -n PlayerStatsAPI -f net8.0
-cd PlayerStatsAPI
-```
+   **Step 1/5: Create Target Project**
+   ```
+   🎯 Create .NET 8 Project
+   
+   The extension will:
+   ✓ Create new .NET 8 Web API project structure
+   ✓ Set up modern project file (.csproj)
+   ✓ Configure proper SDK version
+   
+   Location: ../modernized-code/dotnet-stats-api
+   Template: web API (minimal)
+   
+   [Create Project] [Cancel]
+   ```
+   - Click **"Create Project"**
+   - Extension generates the new structure automatically
 
-2. **Add required packages:**
+   **Step 2/5: Migrate Models**
+   ```
+   📦 Migrate Data Models
+   
+   Models to migrate:
+   ✓ Player.cs (3 changes needed)
+   ✓ MatchHistory.cs (2 changes needed)
+   
+   Changes:
+   - Update namespace declarations
+   - Update EF annotations
+   - Remove legacy attributes
+   
+   [Preview Changes] [Apply Migration]
+   ```
+   - Click **"Preview Changes"** to see side-by-side comparison
+   - Click **"Apply Migration"** to copy and update models
 
-```bash
-dotnet add package Microsoft.EntityFrameworkCore.SqlServer
-dotnet add package Microsoft.EntityFrameworkCore.InMemory
-dotnet add package Microsoft.EntityFrameworkCore.Design
-dotnet add package Swashbuckle.AspNetCore
-```
+   **Step 3/5: Migrate DbContext**
 
-3. **Verify the new project:**
+   **Step 4/5: Convert to Minimal APIs**
+   ```
+   🚀 Modernize API Endpoints
+   
+   The extension will convert your controllers to minimal APIs!
+   
+   PlayersController.cs has 7 endpoints:
+   ✓ GET /api/players → Minimal API
+   ✓ GET /api/players/{id} → Minimal API
+   ✓ POST /api/players → Minimal API
+   ✓ PUT /api/players/{id} → Minimal API
+   ✓ DELETE /api/players/{id} → Minimal API
+   ✓ GET /api/players/leaderboard → Minimal API
+   
+   Benefits:
+   - 60% less boilerplate code
+   - Better performance
+   - Modern C# patterns
+   
+   [Show Preview] [Convert All]
+   ```
+   - Click **"Show Preview"** to see the new minimal API code
+   - Click **"Convert All"** to apply changes
 
-```bash
-dotnet build
-dotnet run
-```
+   **Step 5/5: Update Dependencies & Test**
+   ```
+   ✅ Finalize Migration
+   
+   Remaining tasks:
+   ✓ Add NuGet packages (EF Core, Swagger)
+   ✓ Update connection strings
+   ✓ Generate Program.cs with minimal APIs
+   ✓ Configure services and middleware
+   
+   [Complete Migration] [Review Summary]
+   ```
+   - Click **"Complete Migration"**
+   - Extension finalizes all configurations
 
-Expected output:
-```
-Now listening on: http://localhost:5000
-```
+3. **Review the Migration Summary:**
+   The extension shows you everything that was done:
+   ```
+   🎉 MIGRATION COMPLETED
+   
+   Files Created: 8
+   Files Modified: 0
+   Lines of Code: 423 (down from 687)
+   
+   Next Steps:
+   1. Review generated code in Program.cs
+   2. Test endpoints with: dotnet run
+   3. Open Swagger UI at: http://localhost:5000/swagger
+   ```
 
 ### Step 3: Migrate Data Models (5 minutes)
 
