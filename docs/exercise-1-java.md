@@ -49,39 +49,34 @@ Spring Boot 3.2.x
 ### Step 1: Clone & Setup
 
 ```bash
-# Clone the workshop repository
 git clone https://github.com/CanarysPlayground/app-modernization-workshop.git
 cd app-modernization-workshop
-
-# Navigate to the Java exercise
 cd legacy-code/java-tournament-service
 ```
 
 ### Step 2: Verify Setup
 
 ```bash
-# Check Java version (requires JDK 17+)
 java -version
-
-# Check Maven version
 mvn -version
-
-# Verify GitHub Copilot extensions are installed
-# Open VS Code and ensure these are active:
-# - GitHub Copilot Chat
-# - GitHub Copilot App Modernization - Java Upgrade
 ```
+
+Ensure you have:
+- **Java 17+** installed
+- **Maven 3.8+** installed
+- **GitHub Copilot extensions** active in VS Code:
+  - GitHub Copilot Chat
+  - GitHub Copilot App Modernization - Java Upgrade
 
 ### Step 3: Build Legacy Code
 
 ```bash
-# Build the project to understand baseline
 mvn clean install
-
-# Run the application
 mvn spring-boot:run
+```
 
-# Test the API (in another terminal)
+Test the API in another terminal:
+```bash
 curl http://localhost:8080/api/tournaments
 ```
 
