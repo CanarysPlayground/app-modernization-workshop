@@ -49,9 +49,9 @@ Spring Boot 3.2.x
 ### Step 1: Clone & Setup
 
 ```bash
-# Clone the repository
-git clone <repository-url>
-cd App_modernization
+# Clone the workshop repository
+git clone https://github.com/CanarysPlayground/app-modernization-workshop.git
+cd app-modernization-workshop
 
 # Navigate to the Java exercise
 cd legacy-code/java-tournament-service
