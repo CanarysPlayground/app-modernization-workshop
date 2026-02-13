@@ -230,7 +230,7 @@ code .
 
 💡 **Pro Tip**: Modern LLMs understand migration dependencies. When you request a Spring Boot 3 upgrade, they automatically apply related changes like namespace migrations!
 
-### Step 4: Convert Controllers to Reactive (8 minutes)
+### Step 4: Convert Controllers to Reactive (10 minutes)
 
 **Use Copilot Inline Chat for reactive transformation:**
 
@@ -248,120 +248,93 @@ code .
    - Use **Claude 3.5 Sonnet** for reactive patterns (handles async code well)
    - Or **GPT-4o** for balanced approach
 
-5. **Review Copilot's Changes:**
 
-**BEFORE (Blocking):**
-```java
-@RestController
-@RequestMapping("/api/tournaments")
-public class TournamentController {
-    @Autowired
-    private TournamentService tournamentService;
-    
-    @GetMapping("/{id}")
-    public ResponseEntity<Tournament> getTournament(@PathVariable Long id) {
-        return ResponseEntity.ok(tournamentService.findById(id));
-    }
-    
-    @GetMapping
-    public ResponseEntity<List<Tournament>> getAllTournaments() {
-        return ResponseEntity.ok(tournamentService.findAll());
-    }
-}
-```
-
-6. **Accept Copilot's transformation:**
-
-**AFTER (Reactive):**
-```java
-@RestController
-@RequestMapping("/api/tournaments")
-public class TournamentController {
-    
-    private final TournamentService tournamentService;
-    
-    public TournamentController(TournamentService tournamentService) {
-        this.tournamentService = tournamentService;
-    }
-    
-    @GetMapping("/{id}")
-    public Mono<ResponseEntity<Tournament>> getTournament(@PathVariable Long id) {
-        return tournamentService.findById(id)
-            .map(ResponseEntity::ok)
-            .defaultIfEmpty(ResponseEntity.notFound().build());
-    }
-    
-    @GetMapping
-    public Flux<Tournament> getAllTournaments() {
-        return tournamentService.findAll();
-    }
-    
-    @PostMapping
-    public Mono<ResponseEntity<Tournament>> createTournament(@RequestBody Tournament tournament) {
-        return tournamentService.save(tournament)
-            .map(created -> ResponseEntity.status(HttpStatus.CREATED).body(created));
-    }
-}
-```
-
-7. **Key Changes Copilot Applied:**
+5. **Key Changes Copilot Applied:**
    - `List<T>` → `Flux<T>` (streaming multiple items)
    - `T` → `Mono<T>` (single async result)
    - Added proper error handling with `.defaultIfEmpty()`
    - Constructor injection instead of `@Autowired`
 
-### Step 5: Modernize Repository Layer (4 minutes)
+7. **Modernize the Service Layer too:**
 
-**Use Copilot for data layer transformation:**
+   Open `TournamentService.java`, select the class, and use Inline Chat:
+   ```
+   Convert service methods to reactive: return Mono and Flux, use reactive repository calls, add proper error handling
+   ```
+
+   Copilot will transform blocking service methods to reactive:
+   ```java
+   @Service
+   public class TournamentService {
+       private final TournamentRepository repository;
+       
+       public TournamentService(TournamentRepository repository) {
+           this.repository = repository;
+       }
+       
+       public Mono<Tournament> findById(Long id) {
+           return repository.findById(id);
+       }
+       
+       public Flux<Tournament> findAll() {
+           return repository.findAll();
+       }
+       
+       public Mono<Tournament> save(Tournament tournament) {
+           return repository.save(tournament);
+       }
+   }
+   ```
+
+### Step 5: Verify Repository Auto-Migration (2 minutes)
+
+**⚡ Copilot Intelligence: When you asked for "reactive data (r2dbc)" in Step 2, Copilot likely converted your repositories to reactive automatically!**
+
+**Verify what Copilot already completed:**
 
 1. **Open `TournamentRepository.java`**
 
-2. **Convert repository to reactive:**
+2. **Check the reactive transformation:**
 
-   Select the interface, press `Ctrl+I` and ask:
+   Verify it shows:
+   ```java
+   @Repository
+   public interface TournamentRepository extends ReactiveCrudRepository<Tournament, Long> {
+       Flux<Tournament> findByStatus(TournamentStatus status);
+       Flux<Tournament> findByGame(String game);
+       // All methods return Mono or Flux
+   }
+   ```
+
+3. **Confirm the migration:**
+   - ✅ `JpaRepository` → `ReactiveCrudRepository`
+   - ✅ `List<T>` → `Flux<T>`
+   - ✅ Single objects → `Mono<T>`
+   - ✅ Comment shows "Reactive R2DBC Repository - NON-BLOCKING I/O"
+
+4. **Check entity annotations:**
+
+   Open `Tournament.java` and verify:
+   ```java
+   @Table("tournaments")  // R2DBC annotation, not @Entity
+   public class Tournament {
+       @Id
+       private Long id;
+       // ... other fields
+   }
+   ```
+
+5. **If NOT auto-migrated, use Copilot Inline Chat:**
    ```
    Convert from JpaRepository to ReactiveCrudRepository with R2DBC. Update all method return types to Flux or Mono.
    ```
 
-4. **Review the changes:**
-
-**BEFORE (Blocking JPA):**
-```java
-@Repository
-public interface TournamentRepository extends JpaRepository<Tournament, Long> {
-    List<Tournament> findByStatus(String status);
-    List<Tournament> findByGame(String game);
-}
-```
-
-5. **Accept Copilot's suggestion:**
-
-**AFTER (Reactive R2DBC):**
-```java
-@Repository
-public interface TournamentRepository extends ReactiveCrudRepository<Tournament, Long> {
-    Flux<Tournament> findByStatus(String status);
-    Flux<Tournament> findByGame(String game);
-}
-```
-
-3. **Entity updated automatically:**
-   ```java
-   @Table("tournaments")
-   public class Tournament {
-       @Id
-       private Long id;
-       private String name;
-       private String game;
-       private String status;
-       private LocalDateTime startDate;
-   }
-   ```
-
-4. **Verify the build:**
+6. **Verify the build:**
    ```bash
    mvn clean compile
    ```
+
+💡 **Pro Tip**: Copilot understands dependency chains. Requesting "reactive data (r2dbc)" triggers repository pattern updates automatically!
 
 ### Step 6: Add Health Checks and Metrics (3 minutes)
 
