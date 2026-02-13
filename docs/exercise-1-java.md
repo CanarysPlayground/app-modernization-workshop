@@ -44,7 +44,67 @@ Spring Boot 3.2.x
 └── Virtual threads for I/O operations
 ```
 
-## 🚀 Step-by-Step Guide
+## 🚀 Getting Started
+
+### Step 1: Clone & Setup
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd App_modernization
+
+# Navigate to the Java exercise
+cd legacy-code/java-tournament-service
+```
+
+### Step 2: Verify Setup
+
+```bash
+# Check Java version (requires JDK 17+)
+java -version
+
+# Check Maven version
+mvn -version
+
+# Verify GitHub Copilot extensions are installed
+# Open VS Code and ensure these are active:
+# - GitHub Copilot Chat
+# - GitHub Copilot App Modernization - Java Upgrade
+```
+
+### Step 3: Build Legacy Code
+
+```bash
+# Build the project to understand baseline
+mvn clean install
+
+# Run the application
+mvn spring-boot:run
+
+# Test the API (in another terminal)
+curl http://localhost:8080/api/tournaments
+```
+
+## 📂 Project Structure
+
+```
+java-tournament-service/
+├── src/main/java/
+│   └── com/gamearena/tournament/
+│       ├── TournamentApplication.java
+│       ├── controller/
+│       │   └── TournamentController.java
+│       ├── service/
+│       │   └── TournamentService.java
+│       ├── repository/
+│       │   └── TournamentRepository.java
+│       └── model/
+│           └── Tournament.java
+├── pom.xml                    # Maven dependencies
+└── application.properties     # Configuration
+```
+
+## 🔧 Step-by-Step Guide
 
 ### Step 1: Use Extension to Analyze Legacy Code (5 minutes)
 
