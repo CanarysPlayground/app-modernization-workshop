@@ -93,7 +93,6 @@ ext install GitHub.copilot-chat
    - "GitHub Copilot app modernization for .NET"
    - "GitHub Copilot Chat"
 3. Restart VS Code after installation
-4. Verify by opening Copilot Chat (`Ctrl+Alt+I` or `Cmd+Alt+I`)
 
 ### Step 4: Start the Workshop
 
@@ -152,21 +151,6 @@ Jump to **Exercise 4** for containerization, CI/CD, and infrastructure automatio
 ### Path 4: Full-Stack Developer
 Complete all exercises in sequence for end-to-end modernization experience.
 
-## 🤖 Using GitHub Copilot Agents
-
-Throughout this workshop, you'll use different GitHub Copilot capabilities:
-
-### 1. **GitHub Copilot Chat (Inline Assistance)**
-- Press `Ctrl+I` to get inline code suggestions
-- Ask questions like: "How do I migrate this Spring Boot code to use WebFlux?"
-
-### 2. **GitHub Copilot Agent Mode**
-- Use `/workspace` agent for codebase-wide refactoring
-- Use `@workspace` to ask questions about your project structure
-- Example: `@workspace find all deprecated API calls`
-
-### 3. **Custom Agents (Advanced)**
-In Exercise 4, you'll create a custom agent for automated code reviews and migration validation.
 
 ## 📖 Additional Resources
 
@@ -176,32 +160,6 @@ In Exercise 4, you'll create a custom agent for automated code reviews and migra
 - [Microsoft Learn: C++ App Modernization](https://learn.microsoft.com/en-us/cpp/porting/copilot-app-modernization-cpp?view=msvc-170)
 - [Azure Developer: GitHub Copilot App Modernization](https://learn.microsoft.com/en-us/azure/developer/github-copilot-app-modernization/overview)
 - [Tailspin Toys - SDLC Agents Workshop](https://github.com/sombaner/agents-in-sdlc)
-
-## 🆘 Getting Help
-
-- **During Workshop**: Raise your hand or post in the workshop chat
-- **GitHub Issues**: [Open an issue](https://github.com/your-repo/issues)
-- **GitHub Discussions**: [Join the conversation](https://github.com/your-repo/discussions)
-
-## 🎉 What's Next?
-
-After completing this workshop:
-
-1. ✅ Apply these patterns to your real-world projects
-2. ✅ Explore advanced GitHub Copilot features (Copilot Workspace, Copilot for Pull Requests)
-3. ✅ Join the [GitHub Copilot Community](https://github.com/community)
-4. ✅ Share your modernization success stories
-
-## 📜 License
-
-This workshop content is licensed under the MIT License. See [LICENSE](LICENSE) for details.
-
-## 🙏 Acknowledgments
-
-This workshop is inspired by:
-- [Tailspin Toys SDLC Workshop](https://github.com/sombaner/agents-in-sdlc)
-- GitHub Universe 2024 presentations on App Modernization
-- Real-world migration experiences from the community
 
 ---
 
