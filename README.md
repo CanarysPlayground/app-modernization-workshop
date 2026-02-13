@@ -46,11 +46,6 @@ By the end of this 2-hour workshop, you will:
 | 3 | [Angular Frontend Modernization](./docs/exercise-3-angular.md) | 20 min | ⭐⭐ | Frontend | Upgrade Angular 12 → 18, signals, standalone components |
 | 4 | [DevOps & Data Pipeline](./docs/exercise-4-devops-data.md) | 20 min | ⭐⭐⭐⭐ | DevOps/Full-Stack | Containerize apps, GitHub Actions, ETL pipeline |
 
-**🎯 Choose Your Path:**
-- **Backend Developer**: Start with Exercises 1 & 2
-- **Frontend Developer**: Focus on Exercise 3
-- **DevOps Engineer**: Jump to Exercise 4
-- **Full-Stack Developer**: Complete all exercises in sequence
 
 
 ## 📖 Additional Resources
@@ -60,8 +55,9 @@ By the end of this 2-hour workshop, you will:
 - [GitHub Copilot for Java & .NET](https://github.blog/changelog/2025-09-22-github-copilot-app-modernization-is-now-generally-available-for-java-and-net/)
 - [Microsoft Learn: C++ App Modernization](https://learn.microsoft.com/en-us/cpp/porting/copilot-app-modernization-cpp?view=msvc-170)
 - [Azure Developer: GitHub Copilot App Modernization](https://learn.microsoft.com/en-us/azure/developer/github-copilot-app-modernization/overview)
-- [Tailspin Toys - SDLC Agents Workshop](https://github.com/sombaner/agents-in-sdlc)
+
 
 ---
 
-**Ready to modernize Game Arena Legends?** Pick an exercise above and start your modernization journey! 🚀
+**Ready to modernize Game Arena Legends?** [Start with Exercise 1](./docs/exercise-1-java.md) or pick any exercise above! 🚀
+
