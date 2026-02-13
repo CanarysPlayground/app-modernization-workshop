@@ -56,7 +56,6 @@ By the end of this 2-hour workshop, you will:
 - [Microsoft Learn: C++ App Modernization](https://learn.microsoft.com/en-us/cpp/porting/copilot-app-modernization-cpp?view=msvc-170)
 - [Azure Developer: GitHub Copilot App Modernization](https://learn.microsoft.com/en-us/azure/developer/github-copilot-app-modernization/overview)
 
-
 ---
 
 **Ready to modernize Game Arena Legends?** [Start with Exercise 1](./docs/exercise-1-java.md) or pick any exercise above! 🚀
