@@ -101,7 +101,7 @@ java-tournament-service/
 
 ## 🔧 Step-by-Step Guide
 
-### Step 1: Use Extension to Analyze Legacy Code (5 minutes)
+### Step 1: Use Extension to Analyze Legacy Code (4 minutes)
 
 1. **Open the project in VS Code:**
 ```bash
@@ -138,7 +138,7 @@ code .
    - 📋 Required changes: javax→jakarta, reactive patterns
    - 🔧 Predefined tasks available: Spring Boot 3 upgrade, reactive migration
 
-### Step 2: Apply Predefined Task for Spring Boot Upgrade (5 minutes)
+### Step 2: Apply Predefined Task for Spring Boot Upgrade (4 minutes)
 
 **Use the agent with predefined task for dependency upgrade:**
 
@@ -203,7 +203,7 @@ code .
 </dependencies>
 ```
 
-### Step 3: Use Agent to Migrate javax to jakarta (5 minutes)
+### Step 3: Use Agent to Migrate javax to jakarta (4 minutes)
 
 **Apply OpenRewrite recipe via agent:**
 
@@ -234,7 +234,7 @@ code .
    - Suggests fixes if issues found
    - Shows successful build confirmation
 
-### Step 4: Convert Controllers to Reactive with Agent (10 minutes)
+### Step 4: Convert Controllers to Reactive with Agent (8 minutes)
 
 **Use agent mode for reactive transformation:**
 
@@ -318,7 +318,7 @@ public class TournamentController {
    - Added proper error handling with `.defaultIfEmpty()`
    - Constructor injection instead of `@Autowired`
 
-### Step 5: Modernize Repository with Agent (5 minutes)
+### Step 5: Modernize Repository with Agent (4 minutes)
 
 **Use agent for data layer transformation:**
 
@@ -370,40 +370,12 @@ public interface TournamentRepository extends ReactiveCrudRepository<Tournament,
    }
    ```
 
-### Step 6: Run CVE Check and Build Verification (3 minutes)
-
-**Use agents for security and build validation:**
-
-1. **Check for CVE vulnerabilities:**
-
-   ```
-   @workspace /agent AppModernization-Java check CVEs in dependencies
+4. **Verify the build:**
+   ```bash
+   mvn clean compile
    ```
 
-   Agent reports:
-   - High-severity vulnerabilities found
-   - Recommended version upgrades
-   - Automatic remediation available
-
-2. **Apply CVE fixes:**
-
-   ```
-   @workspace /agent AppModernization-Java remediate CVEs
-   ```
-
-3. **Verify build integrity:**
-
-   ```
-   @workspace /agent AppModernization-Java verify build and run tests
-   ```
-
-   Build agent:
-   - Compiles the project
-   - Runs existing tests
-   - Reports test coverage
-   - Confirms successful modernization
-
-### Step 7: Add Health Checks and Metrics (3 minutes)
+### Step 6: Add Health Checks and Metrics (3 minutes)
 
 **Use agent to configure observability:**
 
@@ -449,91 +421,39 @@ curl http://localhost:8080/actuator/health
 curl http://localhost:8080/actuator/metrics
 ```
 
-### Step 8: Enable Virtual Threads with Agent (2 minutes)
+### Step 7: Test the Modernized Service (3 minutes)
 
-**Use agent for Java 21 virtual threads:**
-
-1. **Generate virtual thread configuration:**
-
-   In Copilot Chat:
-   ```
-   @workspace /agent AppModernization-Java add virtual threads configuration for better concurrency
-   ```
-
-2. **Agent creates configuration:
-
-```java
-@Configuration
-public class VirtualThreadConfig {
-    
-    @Bean
-    public TaskExecutor taskExecutor() {
-        return new SimpleAsyncTaskExecutor(task -> 
-            Thread.ofVirtual().start(task)
-        );
-    }
-}
+1. **Run the application:**
+```bash
+mvn spring-boot:run
 ```
 
-### Step 9: Generate Tests with Agent (3 minutes)
+2. **Test reactive endpoints:**
+```bash
+curl -X POST http://localhost:8080/api/tournaments \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Spring Championship 2024", "game": "League of Legends", "status": "UPCOMING"}'
 
-**Use test generation agent:**
+curl http://localhost:8080/api/tournaments
+curl http://localhost:8080/api/tournaments/1
+```
 
-1. **Generate comprehensive tests:**
-
-   In Copilot Chat:
-   ```
-   @workspace /agent AppModernization-Java generate unit tests for TournamentController with WebTestClient and 80% coverage
-   ```
-
-2. **Agent generates:**
-   - Test class with proper annotations (`@WebFluxTest`)
-   - Mock beans configuration
-   - Test methods for all endpoints
-   - Reactive test patterns with `StepVerifier`
-
-3. **Verify tests:**
-   ```bash
-   mvn test
-   ```
-
-### Step 10: Containerize for Azure with Agent (4 minutes)
-
-**Use agent for Docker and Azure deployment:**
-
-1. **Generate Dockerfile:**
-
-   In Copilot Chat:
-   ```
-   @workspace /agent AppModernization-Java generate optimized Dockerfile for Azure Container Apps deployment
-   ```
-
-2. **Agent creates Dockerfile with:**
-   - Multi-stage build
-   - Java 17 base image
-   - Optimized layers
-   - Health check endpoint
-
-3. **Test containerization:**
-   ```bash
-   docker build -t tournament-service:latest .
-   docker run -p 8080:8080 tournament-service:latest
-   ```
+3. **Verify reactive behavior and metrics:**
+```bash
+curl http://localhost:8080/actuator/health
+curl http://localhost:8080/actuator/metrics
+```
 
 ## ✅ Success Criteria
 
 Your modernization is complete when:
 
-- [ ] Agent assessment shows Spring Boot 3.2.0 and Java 17+
-- [ ] All CVEs remediated (verified by CVE agent)
-- [ ] Build verification agent confirms successful compilation
 - [ ] Application starts successfully on port 8080
 - [ ] All endpoints return data reactively (Mono/Flux)
 - [ ] Health check returns UP status with reactive components
-- [ ] Test coverage >80% (verified by test agent)
-- [ ] Dockerfile builds and container runs successfully
+- [ ] Metrics endpoint shows Prometheus format data
 - [ ] No blocking I/O in controllers or services
-- [ ] Virtual threads enabled and visible in metrics
+- [ ] Build completes successfully with `mvn clean install`
 
 ## 🎯 Validation Commands
 
@@ -584,12 +504,10 @@ class TournamentControllerTest {
 2. **Model Selection** matters - GPT-4 for analysis, Claude 3.5 Sonnet for reactive code patterns
 3. **Predefined Tasks** automate common scenarios - Spring Boot upgrade, javax→jakarta migration
 4. **OpenRewrite Integration** enables precise, automated code transformations at scale
-5. **Specialized Agents** handle specific tasks - build verification, CVE remediation, test generation
-6. **CVE Checking** should be part of every modernization - security is built-in
-7. **Reactive Programming** (WebFlux) provides better scalability for I/O-bound operations
-8. **Virtual Threads** (Java 21) simplify concurrent programming
-9. **Containerization** prepares apps for cloud deployment (Azure Container Apps, AKS)
-10. **Agent-Driven Workflows** accelerate modernization by 70-80% vs manual migration
+5. **Reactive Programming** (WebFlux) provides better scalability for I/O-bound operations
+6. **Agent-Driven Workflows** accelerate modernization by 70-80% vs manual migration
+7. **Spring Boot 3.x requires Java 17+** and Jakarta EE namespace
+8. **Actuator + Prometheus** provide production-ready observability
 
 ## 📚 Additional Resources
 
