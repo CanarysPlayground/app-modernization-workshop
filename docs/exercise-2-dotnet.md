@@ -208,18 +208,62 @@ code .
    3. Open Swagger UI at: http://localhost:5000/swagger
    ```
 
-### Step 3: Migrate Data Models (5 minutes)
+### Step 3: Use Extension to Migrate Data Models (5 minutes)
 
-1. **Create the Player model:**
+**Let the extension handle model modernization!**
 
-Use Copilot to migrate the legacy model:
+1. **Navigate to legacy code:**
+   ```bash
+   cd ../legacy-code/dotnet-stats-api/Models
+   ```
 
-Press `Ctrl+I` and ask:
-```
-Convert this .NET Framework Entity Framework 6 model to .NET 8 Entity Framework Core
-```
+2. **Open `Player.cs` in VS Code**
 
-**Modern Player.cs:**
+3. **Use the Extension's Model Migrator:**
+   - Right-click on the `Player.cs` file in Explorer
+   - Select **"Migrate to .NET 8"**
+   - Extension analyzes the model and shows migration plan
+
+4. **Review the Migration Preview:**
+
+   The extension shows a side-by-side comparison:
+   
+   **BEFORE (.NET Framework 4.8):**
+   ```csharp
+   using System.ComponentModel.DataAnnotations;
+   using System.Data.Entity;
+   
+   public class Player
+   {
+       [Key]
+       public int Id { get; set; }
+       public string Username { get; set; }
+       // Old nullable reference approach
+   }
+   ```
+   
+   **AFTER (.NET 8 - Extension Preview):**
+   ```csharp
+   using System.ComponentModel.DataAnnotations;
+   using System.ComponentModel.DataAnnotations.Schema;
+   
+   namespace PlayerStatsAPI.Models;  // File-scoped namespace
+   
+   [Table("Players")]
+   public class Player
+   {
+       [Key]
+       public int Id { get; set; }
+   
+       [Required]
+       [MaxLength(100)]
+       public string Username { get; set; } = string.Empty;  // Nullable reference types
+   }
+   ```
+
+5. **Click "Apply Migration"** - extension creates modernized models:
+
+**Complete Modern Player.cs:**
 ```csharp
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -264,46 +308,68 @@ public class Player
 }
 ```
 
-2. **Create MatchHistory model:**
+6. **Extension shows migration summary:**
+   ```
+   ✅ Model Migration Complete
+   
+   Player.cs changes:
+   - Added file-scoped namespace
+   - Applied nullable reference types
+   - Updated validation attributes
+   - Modernized collection initialization
+   - Added computed properties (WinRate)
+   
+   MatchHistory.cs changes:
+   - Updated foreign key relationships
+   - Added proper navigation properties
+   - Applied modern C# 12 patterns
+   ```
 
-```csharp
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+7. **Repeat for `MatchHistory.cs`** - extension handles it automatically!
 
-namespace PlayerStatsAPI.Models;
+### Step 4: Use Extension to Migrate DbContext (5 minutes)
 
-[Table("MatchHistories")]
-public class MatchHistory
-{
-    [Key]
-    public int Id { get; set; }
+**Let the extension convert Entity Framework 6 to EF Core!**
 
-    [Required]
-    public int PlayerId { get; set; }
+1. **Open `StatsDbContext.cs` in the legacy code**
 
-    [Required]
-    [MaxLength(100)]
-    public string Game { get; set; } = string.Empty;
+2. **Use the Extension's DbContext Migrator:**
+   - Right-click on `StatsDbContext.cs`
+   - Select **"Migrate DbContext to EF Core"**
+   - Extension analyzes your context and relationships
 
-    [Required]
-    public DateTime MatchDate { get; set; }
+3. **Review the Conversion Plan:**
 
-    [Required]
-    public bool IsWin { get; set; }
+   Extension shows what will change:
+   ```
+   📋 DBCONTEXT MIGRATION PLAN
+   
+   Will convert:
+   ✓ DbContext base class (EF6 → EF Core)
+   ✓ DbSet properties (use Set<T>() pattern)
+   ✓ OnModelCreating (update fluent API)
+   ✓ Configuration (move to Dependency Injection)
+   
+   Detected relationships:
+   - Player → MatchHistories (1:Many)
+   
+   [Preview Migration] [Apply Changes]
+   ```
 
-    [Range(0, int.MaxValue)]
-    public int Score { get; set; }
+4. **Click "Preview Migration"** to see side-by-side:
 
-    [MaxLength(50)]
-    public string Rank { get; set; } = string.Empty;
+   **BEFORE (.NET Framework EF6):**
+   ```csharp
+   public class StatsDbContext : DbContext
+   {
+       public StatsDbContext() : base("name=StatsConnection") { }
+       
+       public DbSet<Player> Players { get; set; }
+       public DbSet<MatchHistory> MatchHistories { get; set; }
+   }
+   ```
 
-    // Navigation property
-    [ForeignKey(nameof(PlayerId))]
-    public Player? Player { get; set; }
-}
-```
-
-### Step 4: Migrate DbContext to EF Core (5 minutes)
+5. **Click "Apply Changes"** - extension generates:
 
 **Modern StatsDbContext.cs:**
 
@@ -363,11 +429,61 @@ public class StatsDbContext : DbContext
 }
 ```
 
-### Step 5: Convert to Minimal APIs (10 minutes)
+6. **Extension completes the migration:**
+   ```
+   ✅ DbContext Migration Complete
+   
+   Modernized:
+   - Constructor now uses dependency injection
+   - DbSet properties use Set<T>() pattern
+   - Fluent API updated to EF Core syntax
+   - Seed data added with strongly-typed configuration
+   
+   Next step: Configure in Program.cs
+   ```
 
-This is the biggest modernization step!
+### Step 5: Use Extension to Convert to Minimal APIs (10 minutes)
 
-**Modern Program.cs with Minimal APIs:**
+**This is the biggest modernization - let the extension handle it!**
+
+1. **Open the legacy `PlayersController.cs`**
+
+2. **Use the Extension's Minimal API Converter:**
+   - Right-click on `PlayersController.cs`
+   - Select **"Convert to Minimal APIs"**
+   - Extension analyzes all controller endpoints
+
+3. **Review the Conversion Plan:**
+
+   Extension shows what will be created:
+   ```
+   🚀 MINIMAL API CONVERSION PLAN
+   
+   PlayersController.cs → Program.cs endpoints
+   
+   Will convert 7 endpoints:
+   ✓ GET /api/players → app.MapGet()
+   ✓ GET /api/players/{id} → app.MapGet()
+   ✓ POST /api/players → app.MapPost()
+   ✓ PUT /api/players/{id} → app.MapPut()
+   ✓ DELETE /api/players/{id} → app.MapDelete()
+   ✓ GET /api/players/leaderboard → app.MapGet()
+   ✓ GET /api/players/{id}/stats → app.MapGet()
+   
+   Benefits:
+   - 60% less code
+   - Better performance
+   - Modern C# 12 patterns
+   - Automatic OpenAPI/Swagger
+   
+   [Preview Minimal APIs] [Convert All]
+   ```
+
+4. **Click "Preview Minimal APIs"** - extension shows the generated code:
+
+5. **Click "Convert All"** - extension generates:
+
+**Modern Program.cs with Minimal APIs (generated by extension):**
 
 ```csharp
 using Microsoft.EntityFrameworkCore;
@@ -531,34 +647,33 @@ app.MapGet("/health", () => Results.Ok(new { status = "healthy", service = "Play
 app.Run();
 ```
 
-### Step 6: Configure for Native AOT (Optional - 2 minutes)
+6. **Extension shows completion summary:**
+   ```
+   ✅ MINIMAL API CONVERSION COMPLETE
+   
+   Success! Generated modern Program.cs with:
+   - 7 minimal API endpoints (GetAllPlayers, GetById, Create, Update, Delete, Leaderboard, Stats)
+   - OpenAPI/Swagger configuration
+   - Dependency injection setup
+   - Health check endpoint
+   
+   Code reduction:
+   - Before: 687 lines (Controllers + Startup)
+   - After: 423 lines (Program.cs only)
+   - Savings: 38% less code!
+   
+   Performance improvements:
+   + Faster startup time
+   + Reduced memory footprint
+   + Native AOT compatible
+   ```
 
-Enable Native AOT for faster startup:
-
-**Update PlayerStatsAPI.csproj:**
-
-```xml
-<Project Sdk="Microsoft.NET.Sdk.Web">
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <PublishAot>true</PublishAot>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-  </ItemGroup>
-</Project>
-```
-
-### Step 7: Test the Modernized API (3 minutes)
+### Step 6: Test the Modernized API (3 minutes)
 
 1. **Run the application:**
 
 ```bash
+cd ../modernized-code/dotnet-stats-api
 dotnet run
 ```
 
