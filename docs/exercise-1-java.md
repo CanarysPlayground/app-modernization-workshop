@@ -62,11 +62,11 @@ mvn -version
 ```
 
 Ensure you have:
-- **Java 17+** installed
-- **Maven 3.8+** installed
+- **Java 17+** installed → [Download JDK 17+](https://adoptium.net/temurin/releases/)
+- **Maven 3.8+** installed → [Download Maven](https://maven.apache.org/download.cgi)
 - **GitHub Copilot extensions** active in VS Code:
-  - GitHub Copilot Chat
-  - GitHub Copilot App Modernization - Java Upgrade
+  - [GitHub Copilot Chat](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat)
+  - [GitHub Copilot App Modernization - Java Upgrade](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-upgrade)
 
 ### Step 3: Build Legacy Code
 
