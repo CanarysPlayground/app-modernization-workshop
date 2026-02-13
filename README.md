@@ -16,7 +16,6 @@ By the end of this 2-hour workshop, you will:
 - ✅ Modernize legacy Java, .NET, Angular, and DevOps/Data pipelines
 - ✅ Apply best practices for code refactoring, testing, and deployment
 - ✅ Learn migration patterns from monoliths to microservices
-- ✅ Implement CI/CD automation for modern cloud platforms
 
 ## 🛠️ Prerequisites
 
@@ -38,9 +37,6 @@ By the end of this 2-hour workshop, you will:
 - **Angular**: Node.js 20+ and npm 10+
 - **Python**: Python 3.11+ (for data engineering exercise)
 
-### Accounts
-- GitHub account with Copilot enabled
-- Azure subscription (free tier works) for deployment exercises
 
 ## 📚 Workshop Structure (2 Hours)
 
@@ -96,9 +92,11 @@ ext install GitHub.copilot-chat
 
 ### Step 4: Start the Workshop
 
-Navigate to the [Workshop Introduction](./docs/README.md) to begin your modernization journey!
-
-**💡 Pro Tip:** Check out [EXTENSION_GUIDE.md](./docs/EXTENSION_GUIDE.md) for detailed instructions on using the GitHub Copilot App Modernization extensions effectively!
+Choose your first exercise to begin:
+- 🟢 [Exercise 1: Java Backend Modernization](./docs/exercise-1-java.md) (30 min)
+- 🟢 [Exercise 2: .NET API Modernization](./docs/exercise-2-dotnet.md) (30 min)
+- 🟢 [Exercise 3: Angular Frontend Modernization](./docs/exercise-3-angular.md) (20 min)
+- 🟢 [Exercise 4: DevOps & Data Pipeline](./docs/exercise-4-devops-data.md) (20 min)
 
 ## 🏗️ Project Architecture
 
@@ -116,11 +114,10 @@ Game Arena Legends Platform
 App_modernization/
 ├── README.md                           # This file
 ├── docs/                               # Workshop exercises
-│   ├── README.md                       # Introduction & navigation
-│   ├── exercise-1-java.md
-│   ├── exercise-2-dotnet.md
-│   ├── exercise-3-angular.md
-│   └── exercise-4-devops-data.md
+│   ├── exercise-1-java.md              # Java/Spring Boot modernization
+│   ├── exercise-2-dotnet.md            # .NET Framework to .NET 8
+│   ├── exercise-3-angular.md           # Angular 12 to 18 upgrade
+│   └── exercise-4-devops-data.md       # DevOps & Data pipeline
 ├── legacy-code/                        # Starting point for each exercise
 │   ├── java-tournament-service/        # Exercise 1 code
 │   ├── dotnet-stats-api/              # Exercise 2 code
@@ -163,4 +160,4 @@ Complete all exercises in sequence for end-to-end modernization experience.
 
 ---
 
-**Ready to modernize Game Arena Legends?** Head over to [docs/README.md](./docs/README.md) to start your journey! 🚀
+**Ready to modernize Game Arena Legends?** Pick an exercise above and start your modernization journey! 🚀
